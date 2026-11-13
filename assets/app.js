@@ -318,7 +318,7 @@
               <h1 class="names rise" style="--i:2"><span class="foil shine">${bride}</span><span class="amp">${amp}</span><span class="foil shine">${groom}</span></h1>
               <p class="event-name rise" style="--i:3">${esc(L(EVENT.tagline))}</p>
             </div>
-            <p class="when rise" style="--i:4"><span>${esc(longDate(start))}<span class="sep" aria-hidden="true">${lang === "ur" ? "|" : "·"}</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}</span><span class="addr">${esc(L(venue.address) || L(venue.city))}</span></p>
+            <p class="when rise" style="--i:4"><span class="dt">${esc(longDate(start))}<span class="sep" aria-hidden="true">${lang === "ur" ? "|" : "·"}</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}</span><span class="addr">${esc(L(venue.address) || L(venue.city))}</span></p>
             ${seats ? `<p class="reserved rise" style="--i:5">${esc(t("reserved", seats))}</p>` : ""}
             <div class="btn-row rise" style="--i:5">
               <a class="btn" href="#rsvp">${ICON.mail}${t("reply")}</a>
@@ -346,7 +346,7 @@
             <div class="facts reveal">
               <div class="card fact corners" style="--k:0">${ICON.cal.replace("<svg", '<svg class="ico"')}<p class="label">${t("date")}</p><p class="value">${esc(shortDate(start))}</p><p class="sub">${esc(fmtDate(start, { weekday: "long" }))}</p></div>
               <div class="card fact corners" style="--k:1">${ICON.clock.replace("<svg", '<svg class="ico"')}<p class="label">${t("time")}</p><p class="value">${esc(timeOf(start))}</p><p class="sub">${EVENT.timeNote ? esc(L(EVENT.timeNote)) : t("onwards")}</p></div>
-              <div class="card fact corners" style="--k:2">${ICON.pin.replace("<svg", '<svg class="ico"')}<p class="label">${t("venue")}</p><p class="value">${esc(L(venue.name))}</p><p class="sub">${esc(L(venue.address) || L(venue.city))}</p></div>
+              <div class="card fact corners" style="--k:2">${ICON.pin.replace("<svg", '<svg class="ico"')}<p class="label">${t("venue")}</p><p class="value">${esc(L(venue.name))}</p><p class="sub addr-line">${esc(L(venue.address) || L(venue.city))}</p></div>
             </div>
             <div class="reveal">
               <div class="map"><iframe title="${esc(L(venue.name))}" src="${esc(mapEmbed())}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
@@ -866,7 +866,7 @@
   // ---------- One-line text that must never be cut off ----------
   // Names and the couple line are kept on a single line. If a phone is too narrow for the
   // CSS size, shrink that element just enough to fit (gold-gradient text is invisible past its box).
-  const FIT = ".hero .names .foil, .m-names span:not(.amp), .couple-line, .inv-hosts, .c-event";
+  const FIT = ".hero .names .foil, .m-names span:not(.amp), .couple-line, .inv-hosts, .c-event, .when .addr, .when .dt, .addr-line";
   function fitLines() {
     document.querySelectorAll(FIT).forEach((el) => {
       el.style.fontSize = "";
