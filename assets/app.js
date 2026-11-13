@@ -149,10 +149,11 @@
 
   const venue = EVENT.venue || {};
   const venueText = () => `${venue.name.en}, ${venue.address?.en || venue.city?.en || ""}`;
+  // Google's official cross-platform Maps URL: opens the app on phones and the named place on desktop.
+  // ("mapQuery" overrides the name if Google ever resolves it to the wrong place.)
   function mapLink() {
-    if (venue.mapUrl) return venue.mapUrl;
-    if (venue.lat && venue.lng) return `https://www.google.com/maps/search/?api=1&query=${venue.lat},${venue.lng}`;
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueText())}`;
+    const q = venue.mapQuery || `${venue.name.en}, ${venue.city?.en || ""}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
   }
   function mapEmbed() {
     // Search by venue name so Google shows its marker; the coordinates keep the view centred on the right spot
@@ -321,7 +322,6 @@
             ${seats ? `<p class="reserved rise" style="--i:5">${esc(t("reserved", seats))}</p>` : ""}
             <div class="btn-row rise" style="--i:5">
               <a class="btn" href="#rsvp">${ICON.mail}${t("reply")}</a>
-              <a class="btn ghost" href="${esc(mapLink())}" target="_blank" rel="noopener">${ICON.pin}${t("map")}</a>
             </div>
           </div>
         </section>
