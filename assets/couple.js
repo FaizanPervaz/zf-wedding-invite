@@ -4,7 +4,7 @@
 window.COUPLE = {
   groom: { en: "M. Zaid Tahir", ur: "محمد زید طاہر" },
   bride: { en: "Fizza Pervez", ur: "فضہ پرویز" },
-  initials: "Z & F",
+  initials: "F & Z",
   // Shown in the footer. Leave "" to hide.
   hashtag: "",
   // Google Sheet RSVP web app URL (ends in /exec). See tools/rsvp-apps-script.gs.
