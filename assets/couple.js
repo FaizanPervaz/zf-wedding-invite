@@ -7,6 +7,8 @@ window.COUPLE = {
   initials: "Z & F",
   // Shown in the footer. Leave "" to hide.
   hashtag: "",
+  // Google Sheet RSVP web app URL (ends in /exec). See tools/rsvp-apps-script.gs.
+  rsvpEndpoint: "",
   // Time zone of the events (used for the countdown and calendar links).
   timeZone: "Asia/Karachi",
   utcOffset: "+05:00"

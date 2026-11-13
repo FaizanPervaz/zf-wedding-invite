@@ -15,7 +15,8 @@ The root page lists no events on purpose.
 
 - **Names / initials**: `assets/couple.js`
 - **Everything about one event** (wording, date, venue, map pin, programme, dress code,
-  RSVP form, music, image): the `EDIT THIS EVENT` JSON block inside that event's `index.html`.
+  music, image): the `EDIT THIS EVENT` JSON block inside that event's `index.html`.
+  In the wording, `**Name**` makes a name bold and keeps it on one line.
 - `"schedule": []` hides the programme section; `"rsvpBy": ""` hides the deadline.
 
 ## Personal links
@@ -29,21 +30,22 @@ https://<site>/baraat/?to=Ali%20Khan&n=4
 Shows "Dear Ali Khan", "4 seats reserved", pre-fills the RSVP name and caps guests at 4.
 Add `&lang=ur` to open in Urdu.
 
-## RSVPs → Google Sheets (one form per event)
+## RSVPs → one Google Sheet (a tab per event + Summary)
 
-1. Create a Google Form for the event with these **short-answer** questions:
-   Name, Attending, Guests, Phone, Message, Invited as.
-2. Form ⋮ menu → **Get pre-filled link** → type `Yes` in Attending and something in the
-   others → **Get link**. The link contains `entry.123456=...` for every question.
-3. In that event's JSON set `rsvp.googleForm`:
-   - `action`: the form URL with `/viewform…` replaced by `/formResponse`
-   - `fields`: the matching `entry.` numbers
-4. **Responses** tab → link to Sheets. Repeat for each event.
+1. Create a new Google Sheet (e.g. "Wedding RSVPs").
+2. **Extensions → Apps Script**, replace everything in `Code.gs` with
+   `tools/rsvp-apps-script.gs`, then **Save**.
+3. **Deploy → New deployment →** gear icon **→ Web app**.
+   Execute as: **Me**. Who has access: **Anyone**. **Deploy**, then allow the permissions.
+4. Copy the **Web app URL** (ends in `/exec`) into `assets/couple.js` → `rsvpEndpoint`.
 
-Alternative: leave the form `action` as is and set `"whatsapp": "923001234567"`; replies
-then open in WhatsApp to that number.
+Replies appear in the Mehndi / Baraat / Walima tabs; **Summary** shows totals.
+If you edit the script later: Deploy → Manage deployments → edit → New version
+(the URL stays the same).
 
 ## Music
 
-Put an `.mp3` in `assets/music/` and set `"music": { "src": "../assets/music/baraat.mp3" }`.
-It starts when the guest taps the seal; a button bottom-right pauses it.
+Each event's `"music"` plays a YouTube clip on loop:
+`{ "youtube": "VIDEO_ID", "start": 29, "end": 83, "volume": 0.7 }` (seconds).
+It starts when the guest taps the seal; the button in the top bar mutes it.
+An `.mp3` also works: `{ "src": "../assets/music/song.mp3" }`.

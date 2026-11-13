@@ -86,7 +86,7 @@
       googleCal: "گوگل کیلنڈر",
       appleCal: "ایپل / آؤٹ لک",
       date: "تاریخ", time: "وقت", venue: "مقام",
-      onwards: "",
+      onwards: "سے آغاز",
       details: "کب اور کہاں",
       countdownTitle: "دن گنے جا رہے ہیں",
       days: "دن", hours: "گھنٹے", minutes: "منٹ", seconds: "سیکنڈ",
@@ -155,8 +155,10 @@
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueText())}`;
   }
   function mapEmbed() {
-    const q = venue.lat && venue.lng ? `${venue.lat},${venue.lng}` : venueText();
-    return `https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=16&output=embed`;
+    // Search by venue name so Google shows its marker; the coordinates keep the view centred on the right spot
+    const q = `${venue.name.en}, ${venue.city?.en || ""}`;
+    const ll = venue.lat && venue.lng ? `&ll=${venue.lat},${venue.lng}` : "";
+    return `https://maps.google.com/maps?q=${encodeURIComponent(q)}${ll}&z=16&output=embed`;
   }
   const couplePlain = () => `${COUPLE.groom.en} & ${COUPLE.bride.en}`;
   const eventTitleEn = () => `${EVENT.title.en} of ${couplePlain()}`;
@@ -208,7 +210,9 @@
     arch: '<svg class="frame" viewBox="0 0 400 560" preserveAspectRatio="none" fill="none" stroke="currentColor" aria-hidden="true">' +
       '<path class="draw" pathLength="1" vector-effect="non-scaling-stroke" stroke-width="1.4" d="M8 552V214C8 128 116 76 200 10c84 66 192 118 192 204v338z"/>' +
       '<path vector-effect="non-scaling-stroke" stroke-width=".7" opacity=".55" d="M22 538V220c0-78 100-124 178-186 78 62 178 108 178 186v318z"/>' +
-      '<path vector-effect="non-scaling-stroke" stroke-width="1" d="M200 10V-14M194 -6l6-8 6 8" opacity=".8"/>' +
+      // Dome finial: stem, bead and a small crescent
+      '<g opacity=".85"><path vector-effect="non-scaling-stroke" stroke-width="1" d="M200 10V-6"/><circle cx="200" cy="-9" r="3" fill="currentColor" stroke="none"/>' +
+      '<path vector-effect="non-scaling-stroke" stroke-width="1.1" d="M196 -22a6 6 0 1 0 8 0a4.6 4.6 0 1 1 -8 0z" fill="currentColor"/></g>' +
       '</svg>',
     lantern: '<svg class="lantern" viewBox="0 0 40 150" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">' +
       '<defs><radialGradient id="lg" cx="50%" cy="55%" r="55%"><stop offset="0" stop-color="#ffe7a3" stop-opacity=".95"/><stop offset=".6" stop-color="#f3b64a" stop-opacity=".35"/><stop offset="1" stop-color="#f3b64a" stop-opacity="0"/></radialGradient></defs>' +
@@ -252,6 +256,16 @@
     return `<svg class="garland" viewBox="0 0 18 ${h}" style="height:${h * 1.1}px" aria-hidden="true"><path d="M9 0V${h}" stroke="#0e5135" stroke-width=".8"/>${blooms.join("")}<path d="M5 ${h - 8}h8l-4 10z" fill="#0e5135"/></svg>`;
   }
   const frieze = '<div class="frieze" aria-hidden="true"></div>';
+  // Gold ring around the medallion: a circle that draws itself, an outer ring of dots and petals
+  function medallionRing() {
+    const dots = [], petals = [];
+    for (let i = 0; i < 48; i++) dots.push(`<circle cx="100" cy="3" r="1.3" transform="rotate(${i * 7.5} 100 100)"/>`);
+    for (let i = 0; i < 24; i++) petals.push(`<path d="M100 9q4 5 0 10q-4-5 0-10z" transform="rotate(${i * 15} 100 100)"/>`);
+    return `<svg class="m-ring" viewBox="0 0 200 200" aria-hidden="true">
+      <g class="m-spin" fill="currentColor">${dots.join("")}${petals.join("")}</g>
+      <circle class="m-draw" cx="100" cy="100" r="85" pathLength="1" fill="none" stroke="currentColor" stroke-width=".8"/>
+      <circle cx="100" cy="100" r="81" fill="none" stroke="currentColor" stroke-width=".4" opacity=".6"/></svg>`;
+  }
   function hangings() {
     if (EVENT.id === "mehndi") {
       const left = [10, 6, 8, 4, 6], right = [6, 4, 8, 6, 10];
@@ -303,7 +317,7 @@
               <h1 class="names rise" style="--i:2"><span class="foil shine">${groom}</span><span class="amp">${amp}</span><span class="foil shine">${bride}</span></h1>
               <p class="event-name rise" style="--i:3">${esc(L(EVENT.tagline))}</p>
             </div>
-            <p class="when rise" style="--i:4"><span>${esc(longDate(start))}<span class="sep" aria-hidden="true">·</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}, ${esc(L(venue.city))}</span></p>
+            <p class="when rise" style="--i:4"><span>${esc(longDate(start))}<span class="sep" aria-hidden="true">${lang === "ur" ? "|" : "·"}</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}, ${esc(L(venue.city))}</span></p>
             ${seats ? `<p class="reserved rise" style="--i:5">${esc(t("reserved", seats))}</p>` : ""}
             <div class="btn-row rise" style="--i:5">
               <a class="btn" href="#rsvp">${ICON.mail}${t("reply")}</a>
@@ -316,7 +330,7 @@
         <section class="invite center">
           <div class="wrap reveal">
             ${ICON.ornament}
-            <p class="lead" style="margin-top:2rem">${esc(L(EVENT.invitation))}</p>
+            ${invitationHTML(EVENT.invitation)}
             ${EVENT.verse ? verseHTML(EVENT.verse) : ""}
           </div>
         </section>
@@ -330,8 +344,8 @@
               <h2 class="display" id="details-h">${esc(L(venue.name))}</h2>
             </div>
             <div class="facts reveal">
-              <div class="card fact corners" style="--k:0">${ICON.cal.replace("<svg", '<svg class="ico"')}<p class="label">${t("date")}</p><p class="value">${esc(longDate(start))}</p></div>
-              <div class="card fact corners" style="--k:1">${ICON.clock.replace("<svg", '<svg class="ico"')}<p class="label">${t("time")}</p><p class="value">${esc(timeOf(start))} ${t("onwards")}</p>${EVENT.timeNote ? `<p class="sub">${esc(L(EVENT.timeNote))}</p>` : ""}</div>
+              <div class="card fact corners" style="--k:0">${ICON.cal.replace("<svg", '<svg class="ico"')}<p class="label">${t("date")}</p><p class="value">${esc(shortDate(start))}</p><p class="sub">${esc(fmtDate(start, { weekday: "long" }))}</p></div>
+              <div class="card fact corners" style="--k:1">${ICON.clock.replace("<svg", '<svg class="ico"')}<p class="label">${t("time")}</p><p class="value">${esc(timeOf(start))}</p><p class="sub">${EVENT.timeNote ? esc(L(EVENT.timeNote)) : t("onwards")}</p></div>
               <div class="card fact corners" style="--k:2">${ICON.pin.replace("<svg", '<svg class="ico"')}<p class="label">${t("venue")}</p><p class="value">${esc(L(venue.name))}</p><p class="sub">${esc(L(venue.address) || L(venue.city))}</p></div>
             </div>
             <div class="reveal">
@@ -408,16 +422,34 @@
         <div class="door l">${ICON.doorL}<i class="knob"></i></div>
         <div class="door r">${ICON.doorR}<i class="knob"></i></div>
         <div class="cover-inner">
-          <p class="arabic bism" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-          <p class="arabic ayah" lang="ar">وَخَلَقْنَاكُمْ أَزْوَاجًا</p>
-          <p class="trans">${t("ayahTrans")}</p>
-          ${guest ? `<p class="dear">${t("dear")} ${esc(guest)},</p>` : ""}
-          <button class="seal" type="button" data-action="open" aria-label="${t("openInvite")}"><span>${esc(COUPLE.initials.replace(/\s/g, ""))}</span></button>
-          <p class="eyebrow">${t("invited")} ${title}</p>
-          <p class="cnames"><span>${groom}</span><span class="amp">${amp}</span><span>${bride}</span></p>
-          <p class="tap" aria-hidden="true">${t("tap")}</p>
+          <p class="arabic bism dim" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+          <p class="arabic ayah dim" lang="ar">وَخَلَقْنَاكُمْ أَزْوَاجًا</p>
+          <p class="trans dim">${t("ayahTrans")}</p>
+          ${guest ? `<p class="dear dim">${t("dear")} ${esc(guest)},</p>` : ""}
+          <div class="seal-stage">
+            <button class="seal" type="button" data-action="open" aria-label="${t("openInvite")}"><span>${esc(COUPLE.initials.replace(/\s/g, ""))}</span></button>
+            <div class="medallion" aria-live="polite">
+              ${medallionRing()}
+              <p class="m-item eyebrow" style="--d:0">${title}</p>
+              <p class="m-item m-names" style="--d:1"><span>${groom}</span><span class="amp">${amp}</span><span>${bride}</span></p>
+              <p class="m-item m-date" style="--d:2">${esc(shortDate(start))}</p>
+            </div>
+          </div>
+          <p class="eyebrow dim">${t("invited")} ${title}</p>
+          <p class="tap dim" aria-hidden="true">${t("tap")}</p>
         </div>
       </div>`;
+  }
+
+  // **Name** in the wording becomes a bold, unbreakable name in the theme colour
+  const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong class="nm">$1</strong>');
+  function invitationHTML(inv) {
+    if (!inv.hosts) return `<p class="lead inv-body">${rich(L(inv))}</p>`;
+    return `<div class="invitation">
+      <p class="inv-intro">${esc(L(inv.intro))}</p>
+      <p class="inv-hosts">${esc(L(inv.hosts))}</p>
+      <p class="lead inv-body">${rich(L(inv.body))}</p>
+    </div>`;
   }
 
   function verseHTML(v) {
@@ -551,7 +583,15 @@
     btn.disabled = true; btn.textContent = t("sending");
 
     try {
-      if (cfg.googleForm && cfg.googleForm.action && !/XXXX/.test(cfg.googleForm.action)) {
+      if (COUPLE.rsvpEndpoint) {
+        // Google Apps Script web app; it sends no CORS headers, so the response is opaque but the row is written.
+        const body = new URLSearchParams({
+          event: EVENT.id, name: answer.name, attending: answer.attending,
+          guests: String(answer.guests), phone: answer.phone, message: answer.message,
+          invited: guest, seats: seats ? String(seats) : "", company: form.company.value
+        });
+        await fetch(COUPLE.rsvpEndpoint, { method: "POST", mode: "no-cors", body });
+      } else if (cfg.googleForm && cfg.googleForm.action && !/XXXX/.test(cfg.googleForm.action)) {
         const gf = cfg.googleForm, f = gf.fields, body = new URLSearchParams();
         body.append(f.name, answer.name);
         body.append(f.attending, answer.attending === "yes" ? gf.yesValue : gf.noValue);
@@ -624,7 +664,7 @@
     }
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.getElementById("cover")) openCover();
+    if (e.key === "Escape" && document.getElementById("cover")) { revealSeal(); openDoors(); }
   });
 
   // ---------- Music ----------
@@ -717,10 +757,28 @@
     fadeTo(0, 450, () => { if (audio) audio.pause(); if (yt) yt.pauseVideo(); });
   }
 
+  // Opening sequence: tap the seal → it bursts into a gold medallion with the couple's names →
+  // after a pause (or another tap) the doors swing open and the page animates in.
+  let revealTimer;
   function openCover() {
     const cover = document.getElementById("cover");
-    if (!cover || cover.classList.contains("opening")) return;
+    if (!cover) return;
+    if (cover.classList.contains("revealing")) { openDoors(); return; }
+    revealSeal();
+    revealTimer = setTimeout(openDoors, reduceMotion ? 2200 : 3800);
+  }
+  function revealSeal() {
+    const cover = document.getElementById("cover");
+    if (!cover || cover.classList.contains("revealing")) return;
     if (store.sget("invite.music") !== "off") playMusic();
+    cover.classList.add("revealing");
+    // Any further tap on the cover skips straight to the doors
+    setTimeout(() => cover.addEventListener("click", openDoors, { once: true }), 500);
+  }
+  function openDoors() {
+    clearTimeout(revealTimer);
+    const cover = document.getElementById("cover");
+    if (!cover || cover.classList.contains("opening")) return;
     opened = true;
     store.sset(`invite.opened.${EVENT.id}`, "1");
     cover.classList.add("opening");
