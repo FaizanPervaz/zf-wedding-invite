@@ -315,7 +315,7 @@
               <p class="arabic bismillah write" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
               ${EVENT.heroImage ? `<figure class="hero-art rise" style="--i:1"><img src="${esc(EVENT.heroImage.src)}" alt="${esc(L(EVENT.heroImage.alt))}" width="900" height="1200" decoding="async" fetchpriority="high"></figure>` : ""}
               <p class="eyebrow rise" style="--i:1">${title}</p>
-              <h1 class="names rise" style="--i:2"><span class="foil shine">${groom}</span><span class="amp">${amp}</span><span class="foil shine">${bride}</span></h1>
+              <h1 class="names rise" style="--i:2"><span class="foil shine">${bride}</span><span class="amp">${amp}</span><span class="foil shine">${groom}</span></h1>
               <p class="event-name rise" style="--i:3">${esc(L(EVENT.tagline))}</p>
             </div>
             <p class="when rise" style="--i:4"><span>${esc(longDate(start))}<span class="sep" aria-hidden="true">${lang === "ur" ? "|" : "·"}</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}, ${esc(L(venue.city))}</span></p>
