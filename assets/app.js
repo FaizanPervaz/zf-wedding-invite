@@ -427,6 +427,7 @@
           <p class="trans dim">${t("ayahTrans")}</p>
           ${guest ? `<p class="dear dim">${t("dear")} ${esc(guest)},</p>` : ""}
           <div class="seal-stage">
+            <span class="ripple" aria-hidden="true"></span><span class="ripple r2" aria-hidden="true"></span>
             <button class="seal" type="button" data-action="open" aria-label="${t("openInvite")}"><span>${esc(COUPLE.initials.replace(/\s/g, ""))}</span></button>
             <div class="medallion" aria-live="polite">
               ${medallionRing()}
@@ -435,8 +436,10 @@
               <p class="m-item m-date" style="--d:2">${esc(shortDate(start))}</p>
             </div>
           </div>
+          <button class="tap-pill dim" type="button" data-action="open">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>${t("tap")}
+          </button>
           <p class="eyebrow dim">${t("invited")} ${title}</p>
-          <p class="tap dim" aria-hidden="true">${t("tap")}</p>
         </div>
       </div>`;
   }
