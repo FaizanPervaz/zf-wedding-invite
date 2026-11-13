@@ -318,7 +318,7 @@
               <h1 class="names rise" style="--i:2"><span class="foil shine">${bride}</span><span class="amp">${amp}</span><span class="foil shine">${groom}</span></h1>
               <p class="event-name rise" style="--i:3">${esc(L(EVENT.tagline))}</p>
             </div>
-            <p class="when rise" style="--i:4"><span>${esc(longDate(start))}<span class="sep" aria-hidden="true">${lang === "ur" ? "|" : "·"}</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}, ${esc(L(venue.city))}</span></p>
+            <p class="when rise" style="--i:4"><span>${esc(longDate(start))}<span class="sep" aria-hidden="true">${lang === "ur" ? "|" : "·"}</span>${esc(timeOf(start))}</span><span class="city">${esc(L(venue.name))}</span><span class="addr">${esc(L(venue.address) || L(venue.city))}</span></p>
             ${seats ? `<p class="reserved rise" style="--i:5">${esc(t("reserved", seats))}</p>` : ""}
             <div class="btn-row rise" style="--i:5">
               <a class="btn" href="#rsvp">${ICON.mail}${t("reply")}</a>
