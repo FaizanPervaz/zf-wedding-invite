@@ -596,7 +596,10 @@
           guests: String(answer.guests), phone: answer.phone, message: answer.message,
           invited: guest, seats: seats ? String(seats) : "", company: form.company.value
         });
-        await fetch(COUPLE.rsvpEndpoint, { method: "POST", mode: "no-cors", body });
+        // Apps Script often takes 3–6 s to answer. keepalive lets the request finish even if the guest
+        // leaves the page, so show the thank-you once it's under way (an offline failure still rejects fast).
+        const req = fetch(COUPLE.rsvpEndpoint, { method: "POST", mode: "no-cors", body, keepalive: true });
+        await Promise.race([req, new Promise((r) => setTimeout(r, 1800))]);
       } else if (cfg.googleForm && cfg.googleForm.action && !/XXXX/.test(cfg.googleForm.action)) {
         const gf = cfg.googleForm, f = gf.fields, body = new URLSearchParams();
         body.append(f.name, answer.name);
