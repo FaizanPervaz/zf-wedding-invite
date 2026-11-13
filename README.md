@@ -6,11 +6,11 @@ only sees the event(s) whose link they receive.
 | Event  | Page                        | Theme                         |
 | ------ | --------------------------- | ----------------------------- |
 | Mehndi | `mehndi-36yn1z8/index.html` | Turmeric yellow, bottle green |
-| Baraat | `baraat/index.html`         | Maroon and gold               |
+| Baraat | `baraat-j5ei5tn/index.html` | Maroon and gold               |
 | Walima | `walima-d1pclbd/index.html` | Cream, navy and gold          |
 
-Everyone is invited to the Baraat, so it has a simple path. Mehndi and Walima are for
-selected guests, so their folders have a random suffix: `/mehndi/` and `/walima/` don't
+All three event folders have a random suffix, so
+`/mehndi/`, `/baraat/` and `/walima/` don't
 exist, and the links can't be guessed. (The repo is public, so this keeps casual visitors
 out; it isn't a password.) To change a link, rename the folder.
 
