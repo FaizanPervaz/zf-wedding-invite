@@ -161,7 +161,7 @@
     const ll = venue.lat && venue.lng ? `&ll=${venue.lat},${venue.lng}` : "";
     return `https://maps.google.com/maps?q=${encodeURIComponent(q)}${ll}&z=16&output=embed`;
   }
-  const couplePlain = () => `${COUPLE.groom.en} & ${COUPLE.bride.en}`;
+  const couplePlain = () => `${COUPLE.bride.en} & ${COUPLE.groom.en}`;
   const eventTitleEn = () => `${EVENT.title.en} of ${couplePlain()}`;
 
   function calUTC(d) { return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
@@ -282,7 +282,7 @@
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ur" ? "rtl" : "ltr";
     document.title = lang === "ur"
-      ? `${EVENT.title.ur} | ${COUPLE.groom.ur} و ${COUPLE.bride.ur}`
+      ? `${EVENT.title.ur} | ${COUPLE.bride.ur} و ${COUPLE.groom.ur}`
       : `${EVENT.title.en} | ${couplePlain()}`;
 
     const groom = esc(L(COUPLE.groom)), bride = esc(L(COUPLE.bride));
