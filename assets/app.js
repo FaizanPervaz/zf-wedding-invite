@@ -413,6 +413,7 @@
     renderRSVP();
     startCountdown();
     wire();
+    fitLines();
   }
 
   function coverHTML(groom, bride, amp, title) {
@@ -861,6 +862,31 @@
     }
     requestAnimationFrame(frame);
   }
+
+  // ---------- One-line text that must never be cut off ----------
+  // Names and the couple line are kept on a single line. If a phone is too narrow for the
+  // CSS size, shrink that element just enough to fit (gold-gradient text is invisible past its box).
+  const FIT = ".hero .names .foil, .m-names span:not(.amp), .couple-line, .inv-hosts, .c-event";
+  function fitLines() {
+    document.querySelectorAll(FIT).forEach((el) => {
+      el.style.fontSize = "";
+      const cs = getComputedStyle(el);
+      const avail = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (avail <= 0) return;
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      // Script fonts draw swashes (the tail of a "z") past the letter's width: leave ~6% room for them
+      const need = r.getBoundingClientRect().width * 1.06;
+      if (need > avail) {
+        const fs = parseFloat(cs.fontSize);
+        el.style.fontSize = `${Math.floor(fs * (avail / need) * 10) / 10}px`;
+      }
+    });
+  }
+  let fitTimer;
+  addEventListener("resize", () => { clearTimeout(fitTimer); fitTimer = setTimeout(fitLines, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLines);
+  addEventListener("load", fitLines);
 
   render();
   setupMusic();

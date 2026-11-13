@@ -363,7 +363,7 @@ section { padding-block: clamp(56px, 12vw, 104px); }
   translate: -50% -50%;
   border-radius: 50%;
   display: grid; place-content: center; justify-items: center; gap: 0.35rem;
-  padding: 16%;
+  padding: 16% 19%;
   text-align: center; color: var(--door-ink);
   background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--door) 70%, #fff 12%), var(--door) 55%, var(--door-2) 100%);
   box-shadow:
@@ -492,7 +492,7 @@ section { padding-block: clamp(56px, 12vw, 104px); }
 .bismillah { font-size: clamp(1.7rem, 7vw, 2.3rem); color: var(--accent); margin: 0 0 1.25rem; line-height: 1.7; }
 .names { font: 400 clamp(2.2rem, 9.6vw, 4.2rem)/1.2 var(--font-script); margin: 0 -12px; }
 /* Padding gives script swashes room: background-clip:text only paints inside the box */
-.names .foil { display: block; white-space: nowrap; padding: 0.05em 0.35em; }
+.names .foil { display: block; white-space: nowrap; padding: 0.08em 0.5em 0.12em; }
 .names .amp { display: block; font: italic 400 0.42em/1 var(--font-display); margin: 0.15em 0 0.1em; color: var(--accent); }
 [lang="ur"] .names { font-family: var(--font-urdu); font-size: clamp(2.2rem, 10vw, 3.2rem); line-height: 2.1; }
 [lang="ur"] .names .amp { font-family: var(--font-urdu); font-style: normal; }
@@ -554,6 +554,13 @@ body.entered .hero-art img { animation: settle 2800ms var(--ease-out) both 200ms
 /* YouTube audio player: kept in the page but out of the way */
 .yt-holder { position: fixed; left: 0; bottom: 0; width: 200px; height: 200px; opacity: 0.01; pointer-events: none; z-index: -1; overflow: hidden; }
 @media (max-width: 400px) { .bar-actions { gap: 6px; } .snd { width: 34px; height: 34px; } }
+@media (max-width: 359px) {
+  .bar-inner { gap: 8px; }
+  .mono { font-size: 1.3rem; }
+  .bar-actions { gap: 4px; }
+  .seg button { padding: 5px 8px; }
+  .btn.small { padding: 0 11px; }
+}
 
 /* Hero entrance (runs once the doors open) */
 .rise { opacity: 0; }
