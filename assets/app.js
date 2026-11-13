@@ -157,7 +157,7 @@
   }
   function mapEmbed() {
     // Search by venue name so Google shows its marker; the coordinates keep the view centred on the right spot
-    const q = `${venue.name.en}, ${venue.city?.en || ""}`;
+    const q = venue.mapQuery || `${venue.name.en}, ${venue.city?.en || ""}`;
     const ll = venue.lat && venue.lng ? `&ll=${venue.lat},${venue.lng}` : "";
     return `https://maps.google.com/maps?q=${encodeURIComponent(q)}${ll}&z=16&output=embed`;
   }

@@ -3,7 +3,7 @@
 // index.html, so a guest invited to one event never downloads another event's details.
 window.COUPLE = {
   groom: { en: "M. Zaid Tahir", ur: "محمد زید طاہر" },
-  bride: { en: "Fizza Pervez", ur: "فضہ پرویز" },
+  bride: { en: "Dr. Fizza Pervez", ur: "ڈاکٹر فضہ پرویز" },
   initials: "F & Z",
   // Shown in the footer. Leave "" to hide.
   hashtag: "",
