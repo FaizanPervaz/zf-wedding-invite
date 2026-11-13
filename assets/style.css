@@ -541,13 +541,24 @@ body.entered .foil.shine { animation: shine 2600ms var(--ease-in-out) both 900ms
 .inv-intro { margin: 0; font: italic 400 clamp(1.15rem, 4.2vw, 1.35rem)/1.4 var(--font-display); color: var(--muted); }
 .inv-hosts {
   margin: 0.2rem 0;
-  font: 600 clamp(1.7rem, 7vw, 2.3rem)/1.15 var(--font-display);
+  font: 600 clamp(1.35rem, 6.8vw, 2.3rem)/1.15 var(--font-display);
   letter-spacing: 0.01em;
+  white-space: nowrap;
   color: var(--accent);
 }
 [data-theme="baraat"] .inv-hosts { color: #f0d48e; }
-.inv-body { max-width: 30ch; }
+.inv-body { max-width: 30ch; text-wrap: balance; }
 .nm { white-space: nowrap; font-weight: 700; color: var(--accent); }
+/* "Fizza Pervez with M. Zaid Tahir": one line, sized to always fit the column */
+.couple-line {
+  display: block; white-space: nowrap;
+  margin: 0.5rem -0.5rem;
+  font: 700 clamp(1.05rem, 5.4vw, 1.75rem)/1.4 var(--font-display);
+  color: var(--accent);
+}
+.couple-line em { font-weight: 400; font-style: italic; color: var(--muted); padding-inline: 0.1em; }
+[data-theme="baraat"] .couple-line { color: #f0d48e; }
+[lang="ur"] .couple-line { font-family: var(--font-urdu); font-size: clamp(1rem, 4.8vw, 1.35rem); line-height: 2.3; }
 [data-theme="baraat"] .nm { color: #f0d48e; }
 [lang="ur"] .inv-intro { font-family: var(--font-urdu); font-style: normal; font-size: 1rem; line-height: 2.2; }
 [lang="ur"] .inv-hosts { font-family: var(--font-urdu); font-weight: 700; font-size: 1.45rem; line-height: 2.2; }

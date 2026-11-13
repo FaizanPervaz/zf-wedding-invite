@@ -442,7 +442,13 @@
   }
 
   // **Name** in the wording becomes a bold, unbreakable name in the theme colour
-  const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong class="nm">$1</strong>');
+  // {{couple}} becomes "Bride with Groom" on a line of its own that never wraps
+  const coupleLine = () => lang === "ur"
+    ? `<strong class="couple-line">${esc(COUPLE.bride.ur)} ہمراہ ${esc(COUPLE.groom.ur)}</strong>`
+    : `<strong class="couple-line">${esc(COUPLE.bride.en)} <em>with</em> ${esc(COUPLE.groom.en)}</strong>`;
+  const rich = (s) => esc(s)
+    .replace(/\s*\{\{couple\}\}\s*/g, () => coupleLine())
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="nm">$1</strong>');
   function invitationHTML(inv) {
     if (!inv.hosts) return `<p class="lead inv-body">${rich(L(inv))}</p>`;
     return `<div class="invitation">
