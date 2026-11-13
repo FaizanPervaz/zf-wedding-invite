@@ -431,7 +431,7 @@
             <div class="medallion" aria-live="polite">
               ${medallionRing()}
               <p class="m-item eyebrow" style="--d:0">${title}</p>
-              <p class="m-item m-names" style="--d:1"><span>${groom}</span><span class="amp">${amp}</span><span>${bride}</span></p>
+              <p class="m-item m-names" style="--d:1"><span>${bride}</span><span class="amp">${amp}</span><span>${groom}</span></p>
               <p class="m-item m-date" style="--d:2">${esc(shortDate(start))}</p>
             </div>
           </div>
